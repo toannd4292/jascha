@@ -15,7 +15,7 @@
     <div class="grid__item medium-up--two-thirds">
 
       <div id="AddressNewForm" class="form-vertical js-address-form hide">
-        {%- form 'customer_address', customer.new_address -%}
+        {% form 'customer_address', customer.new_address %}
 
           <h2 class="h3">{{ 'customer.addresses.add_new' | t }}</h2>
 
@@ -78,22 +78,20 @@
             <label for="address_default_address_new" class="inline">{{ 'customer.addresses.set_default' | t }}</label>
           </p>
 
-          <label for="addresses-add-submit" class="hidden-label">{{ 'customer.addresses.add' | t }}</label>
-          <label for="addresses-cancel-submit" class="hidden-label">{{ 'customer.addresses.cancel' | t }}</label>
-          <input type="submit" id="addresses-add-submit" class="btn" value="{{ 'customer.addresses.add' | t }}">
-          <button type="button" id="addresses-cancel-submit" class="text-link address-new-toggle">&nbsp;&nbsp;{{ 'customer.addresses.cancel' | t }}</button>
+          <input type="submit" class="btn" value="{{ 'customer.addresses.add' | t }}">
+          <button type="button" class="text-link address-new-toggle">&nbsp;&nbsp;{{ 'customer.addresses.cancel' | t }}</button>
 
-        {%- endform -%}
+        {% endform %}
       </div>
 
       {% comment %}
         List all customer addresses with a unique edit form.
         Also add pagination in case they have a large number of addresses
       {% endcomment %}
-      {%- for address in customer.addresses -%}
-        {%- if address == customer.default_address -%}
+      {% for address in customer.addresses %}
+        {% if address == customer.default_address %}
           <p class="h4">{{ 'customer.addresses.default' | t }}</p>
-        {%- endif -%}
+        {% endif %}
 
         {{ address | format_address }}
 
@@ -103,7 +101,7 @@
         </p>
 
         <div id="EditAddress_{{ address.id }}" class="form-vertical js-address-form hide">
-          {%- form 'customer_address', address -%}
+          {% form 'customer_address', address %}
 
             <hr class="hr--large">
             <h2 class="h3">{{ 'customer.addresses.edit_address' | t }}</h2>
@@ -163,19 +161,16 @@
               <label for="address_default_address_{{form.id}}" class="inline">{{ 'customer.addresses.set_default' | t }}</label>
             </p>
 
-            <label for="addresses-update-submit" class="hidden-label">{{ 'customer.addresses.update' | t }}</label>
-            <input type="submit" id="addresses-update-submit" class="btn" value="{{ 'customer.addresses.update' | t }}">
-
-            <label for="address-edit-toggle" class="hidden-label">{{ 'customer.addresses.cancel' | t }}</label>
-            <button type="button" id="address-edit-toggle" class="text-link address-edit-toggle" data-form-id="{{ form.id }}">&nbsp;&nbsp;{{ 'customer.addresses.cancel' | t }}</button>
-          {%- endform -%}
+            <input type="submit" class="btn" value="{{ 'customer.addresses.update' | t }}">
+            <button type="button" class="text-link address-edit-toggle" data-form-id="{{ form.id }}">&nbsp;&nbsp;{{ 'customer.addresses.cancel' | t }}</button>
+          {% endform %}
         </div>
 
-      {%- endfor -%}
+      {% endfor %}
 
-      {%- if paginate.pages > 1 -%}
-        {%- render 'pagination', paginate: paginate -%}
-      {%- endif -%}
+      {% if paginate.pages > 1 %}
+        {% include 'pagination' %}
+      {% endif %}
 
     </div>
 

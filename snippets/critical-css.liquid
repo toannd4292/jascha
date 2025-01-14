@@ -1,18 +1,16 @@
-{%- liquid
-  assign header_font = settings.type_header_font_family
-  assign base_font = settings.type_base_font_family
-  assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
-  assign base_font_italic = base_font | font_modify: 'style', 'italic'
-  assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic'
--%}
+{%- assign header_font = settings.type_header_font_family -%}
+{%- assign base_font = settings.type_base_font_family -%}
+{%- assign base_font_bold = base_font | font_modify: 'weight', 'bolder' -%}
+{%- assign base_font_italic = base_font | font_modify: 'style', 'italic' -%}
+{%- assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
 
 <style>
-  {{ header_font | font_face: font_display: 'swap' }}
-  {{ base_font | font_face: font_display: 'swap' }}
+  {{ header_font | font_face: font_display: 'block' }}
+  {{ base_font | font_face: font_display: 'block' }}
 
-  {{ base_font_bold | font_face: font_display: 'swap' }}
-  {{ base_font_italic | font_face: font_display: 'swap' }}
-  {{ base_font_bold_italic | font_face: font_display: 'swap' }}
+  {{ base_font_bold | font_face }}
+  {{ base_font_italic | font_face }}
+  {{ base_font_bold_italic | font_face }}
 
   body,
   input,
@@ -22,12 +20,12 @@
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeSpeed;
-    font-family: var(--typeBasePrimary), var(--typeBaseFallback);
-    font-size: calc(var(--typeBaseSize) * 0.85);
-    font-weight: var(--typeBaseWeight);
-    font-style: var(--typeBaseStyle);
-    letter-spacing: var(--typeBaseSpacing);
-    line-height: var(--typeBaseLineHeight);
+    font-family: {{ settings.type_base_font_family.family }}, {{ settings.type_base_font_family.fallback_families }};
+    font-size: {{ settings.type_base_size | times: 0.85 }}px;
+    font-weight: {{ settings.type_base_font_family.weight }};
+    font-style: {{ settings.type_base_font_family.style }};
+    letter-spacing: {{ settings.type_base_spacing | default: "50" | divided_by: 1000.00 }}em;
+    line-height: {{ settings.type_base_line_height | default: 1.4 }};
   }
 
   @media only screen and (min-width: 769px) {
@@ -36,12 +34,12 @@
     textarea,
     button,
     select {
-      font-size: var(--typeBaseSize);
+      font-size: {{ settings.type_base_size }}px;
     }
   }
 
   .page-container,
-  .overscroll-loader {
+  .unloading .page-container {
     display: none;
   }
 
@@ -50,12 +48,13 @@
   h4, .h4,
   h5, .h5,
   h6, .h6,
-  .section-header__title {
-    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-    font-weight: var(--typeHeaderWeight);
+  .section-header__title,
+  .spr-header-title.spr-header-title {
+    font-family: {{ settings.type_header_font_family.family }}, {{ settings.type_header_font_family.fallback_families }};
+    font-weight: {{ settings.type_header_font_family.weight }};
     font-style: {{ settings.type_header_font_family.style }};
-    letter-spacing: var(--typeHeaderSpacing);
-    line-height: var(--typeHeaderLineHeight);
+    letter-spacing: {{ settings.type_header_spacing | default: "25" | divided_by: 1000.00 }}em;
+    line-height: {{ settings.type_header_line_height | default: 1.4 }};
     word-break: break-word;
 
     {% if settings.type_header_capitalize %}
@@ -64,10 +63,10 @@
   }
 
   h2, .h2 {
-    font-family: var(--typeBasePrimary), var(--typeBaseFallback);
-    font-weight: var(--typeBaseWeight);
-    letter-spacing: var(--typeBaseSpacing);
-    line-height: var(--typeBaseLineHeight);
+    font-family: {{ settings.type_base_font_family.family }}, {{ settings.type_base_font_family.fallback_families }};
+    font-weight: {{ settings.type_base_font_family.weight }};
+    letter-spacing: {{ settings.type_base_spacing | default: "50" | divided_by: 1000.00 }}em;
+    line-height: {{ settings.type_base_line_height | default: 1.4 }};
   }
 
   {% comment %}
@@ -113,7 +112,6 @@
     display: block;
     max-width: 100%;
     border: 0 none;
-    height: auto;
     animation: pulse-fade 0.4s infinite linear;
   }
 

@@ -31,11 +31,11 @@
     },
     "social": {
       "share_on_facebook": "Partager",
-      "share_on_x": "Partager",
+      "share_on_twitter": "Tweeter",
       "share_on_pinterest": "Épingler",
       "alt_text": {
         "share_on_facebook": "Partager sur Facebook",
-        "share_on_x": "Tweeter sur X",
+        "share_on_twitter": "Tweeter sur Twitter",
         "share_on_pinterest": "Épingler sur Pinterest"
       },
       "pictured": "Sur la photo"
@@ -46,19 +46,11 @@
       "submit": "S'inscrire"
     },
     "search": {
-      "view_more": "Afficher tous les résultats pour \"{{ terms }}\"",
-      "products": "Produits",
-      "suggestions": "Suggestions",
-      "collections": "Collections",
-      "pages": "Pages",
-      "articles": "Des articles",
-      "no_results_html": "Rechercher \"{{ terms }}\"",
+      "no_results_html": "Votre recherche pour \"{{ terms }}\" n'a pas généré de résultats.",
       "results_for_html": "Votre recherche pour \"{{ terms }}\" a généré les résultats suivants:",
       "title": "Rechercher",
-      "placeholder": "Rechercher",
+      "placeholder": "Rechercher dans la boutique",
       "submit": "Recherche",
-      "cancel": "Annuler",
-      "search_title": "Les plus recherchés",
       "result_count": {
         "one": "{{ count }} résultat",
         "other": "{{ count }} résultats"
@@ -85,10 +77,6 @@
       "address_no_results": "Aucun résultat pour cette adresse",
       "address_query_limit_html": "Vous avez dépassé la limite de Google utilisation de l'API. Envisager la mise à niveau à un <a href=\"https://developers.google.com/maps/premium/usage-limits\">régime spécial</a>.",
       "auth_error_html": "Il y avait un problème authentifier votre compte Google Maps . Créer et activer <a href=\"https://developers.google.com/maps/documentation/javascript/get-api-key\">l'API JavaScript</a> et <a href=\"https://developers.google.com/maps/documentation/geocoding/get-api-key\">l'API de géocodage</a> les autorisations de application."
-    },
-    "slideshow": {
-      "play_slideshow": "Lire le diaporama",
-      "pause_slideshow": "Diaporama Pause"
     }
   },
   "blogs": {
@@ -136,8 +124,7 @@
       "item_count": {
         "one": "{{ count }} article",
         "other": "{{ count }} articles"
-      },
-      "max_quantity": "Vous ne pouvez avoir que {{ quantity }} de {{ title }} dans votre panier."
+      }
     },
     "label": {
       "price": "Prix",
@@ -297,9 +284,6 @@
   },
   "products": {
     "general": {
-      "color_swatch_trigger": "Couleur",
-      "size_trigger": "Taille",
-      "size_chart": "Tableau des tailles",
       "sale": "Vente",
       "save_html": "Épargnez {{ saved_amount }}",
       "next_product": "Suivant: {{ title }}",
@@ -307,12 +291,10 @@
       "regular_price": "Prix régulier",
       "from_text_html": "À partir de {{ price }}",
       "related_products": "Produits connexes",
-      "collection_return": "Retour à {{ collection }}",
-      "reviews": "Commentaires"
+      "collection_return": "Retour à {{ collection }}"
     },
     "product": {
       "description": "Description",
-      "in_stock_label": "En stock",
       "stock_label": "{{ count }} en stock",
       "sold_out": "Épuisé",
       "unavailable": "Non disponible",
@@ -323,19 +305,9 @@
       "shipping_policy_html": "<a href='{{ link }}'>Frais d'expédition<\/a> calculés lors du passage à la caisse.",
       "will_not_ship_until": "Sera expédié après {{ date }}",
       "will_be_in_stock_after": "Sera en stock à compter de {{ date }}",
-      "waiting_for_stock": "En rupture de stock, expédition prochainement",
+      "waiting_for_stock": "Inventaire sur le chemin",
       "view_in_space": "Afficher dans votre espace",
       "view_in_space_label": "Affichage dans votre espace, charge l'article dans une fenêtre de réalité augmentée"
-    }
-  },
-  "store_availability":{
-    "general":{
-      "view_store_info": "Afficher les informations de magasin",
-      "check_other_stores": "Vérifier la disponibilité dans d'autres magasins",
-      "pick_up_available": "Récupération disponible",
-      "pick_up_currently_unavailable": "Récupération actuellement indisponible",
-      "pick_up_available_at_html": "Récupération disponible à <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong> {{location_name}} <\/strong>"
     }
   },
   "gift_cards": {
@@ -349,19 +321,6 @@
       "shop_link": "Boutique",
       "print": "Imprimer",
       "add_to_apple_wallet": "Ajouter à Apple Wallet"
-    }
-  },
-  "recipient": {
-    "form": {
-      "checkbox": "Je veux envoyer ce produit comme cadeau",
-      "email_label": "E‑mail du destinataire",
-      "email": "E‑mail",
-      "name_label": "Nom du destinataire (facultatif)",
-      "name": "Nom",
-      "message_label": "Message (facultatif)",
-      "message": "Message",
-      "max_characters": "{{ max_chars }} caractères au maximum",
-      "send_on_label": "Envoyer (facultatif)"
     }
   },
   "date_formats":{

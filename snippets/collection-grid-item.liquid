@@ -1,10 +1,14 @@
-<div class="skrim__item" {{ block.shopify_attributes }}>
+{% unless background_position %}
+  {%- assign background_position = 'top center' -%}
+{% endunless %}
+
+<div class="skrim__item">
   <a href="{{ collection.url }}" class="skrim__link">
-    {%- if collection == blank -%}
+    {% if collection.empty? %}
       {%- assign collection_title = 'home_page.onboarding.collection_title' | t -%}
-    {%- else -%}
+    {% else %}
       {%- assign collection_title = collection.title | escape -%}
-    {%- endif -%}
+    {% endif %}
 
     {%- if image -%}
       {%- assign collection_image = image -%}
@@ -14,20 +18,23 @@
       {%- assign collection_image = collection.products.first.featured_media.preview_image -%}
     {%- endif -%}
 
-    {%- if collection == blank or collection_image == blank -%}
-      {%- capture placeholder -%}collection-{% cycle 1,2,3,4,5,6 %}{%- endcapture -%}
+    {% if collection.empty? %}
+      {% capture placeholder %}collection-{% cycle 1,2,3,4,5,6 %}{% endcapture %}
       <div class="skrim__overlay grid__image">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
-    {%- else -%}
-      <div class="skrim__overlay">
-        {%- render 'image-element',
-          img: collection_image,
-          classes: 'grid__image',
-          sizes: sizes,
-          sizeVariable: sizeVariable,
-          fallback: fallback,
-        -%}
+    {% else %}
+      <div
+        class="skrim__overlay grid__image lazyload"
+        data-bgset="{% include 'bgset', image: collection_image %}"
+        data-sizes="auto"
+        style="background-position: {{ background_position }};">
       </div>
-    {%- endif -%}
+      <noscript>
+        <div
+          class="skrim__overlay grid__image"
+          style="background-image: url({{ collection_image | img_url: '400x' }}); background-position: {{ background_position }};">
+        </div>
+      </noscript>
+    {% endif %}
 
     <div class="skrim__title">
       <div class="skrim__underline-me">

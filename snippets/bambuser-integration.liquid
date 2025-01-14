@@ -1,0 +1,188 @@
+<script>
+
+    // ####### Shopify APIs #######
+
+    const storeAPI = {};
+
+    // Regex for getting product specific name from 'PUBLIC URL' field provided in Dashboard
+    const SHOPIFY_PRODUCT_URL_HANDLE_REGEX = /\/products\/(.[\w\d-+]+)/;
+
+    storeAPI.getProductByUrl = url => {
+        const handle = SHOPIFY_PRODUCT_URL_HANDLE_REGEX.exec(url);
+        return fetch('/products/' + handle[1] + '.js', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(res => res.json());
+    }
+
+    storeAPI.addToCart = itemId =>
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                items: [
+                    {
+                        id: itemId,
+                        quantity: 1
+                    }
+                ]
+            })
+        }).then(res => res.json());
+
+
+    storeAPI.getCurrentCartState = () =>
+        fetch('/cart.js/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(res => res.json());
+
+
+    storeAPI.updateProductInCart = (productId, quantity) =>
+        fetch('/cart/update.js', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                updates: {[productId]: quantity}
+            })
+        }).then(res => res.json());
+
+
+</script>
+
+
+<script>
+
+    // ####### Bambuser player Configuration #######
+
+    // Sometimes image URLs miss the protocol at the beginning
+    // E.g. '//cdn.shopify.com/s/files/.../image.jpg'
+    const urlSanitizer = url => {
+        if (url.startsWith("//")) return `https:${url}`;
+        else if (url.toLocaleLowerCase.startsWith("http")) return url;
+        else throw Error(`Not a valid URL: ${url}`);
+    };
+
+    window.onBambuserLiveShoppingReady = player => {
+
+
+        player.configure({
+            currency: "SEK",
+            locale: "en-US",
+        });
+
+
+        player.on(player.EVENT.ADD_TO_CART, (addedItem, callback) => {
+            storeAPI
+                .addToCart(addedItem.sku)
+                .then(res => {
+                    if (res.items) {
+                        callback(true);
+                    } else if (res.description && res.description.includes("sold out")) {
+                        callback({success: false, reason: "out-of-stock"});
+                    } else {
+                        callback(false);
+                    }
+                })
+                .catch(error => {
+                    callback(false);
+                })
+        });
+
+        player.on(player.EVENT.UPDATE_ITEM_IN_CART, (updatedItem, callback) => {
+            console.log(`Cart updated! ${updatedItem.previousQuantity} --> ${updatedItem.quantity}`);
+            storeAPI
+                .updateProductInCart(updatedItem.sku, updatedItem.quantity)
+                .then(res => {
+                    if (res.items) {
+                        callback(true);
+                    } else {
+                        callback(false);
+                    }
+                })
+                .catch(error => {
+                    callback(false);
+                })
+        });
+
+        player.on(player.EVENT.SYNC_CART_STATE, () => {
+            storeAPI
+                .getCurrentCartState()
+                .then(res => {
+                    if (res.item_count === 0) {
+                        // Emptying the in-player cart
+                        player.updateCart({
+                            items: [],
+                        });
+                    }
+                })
+        });
+
+        player.on(player.EVENT.CHECKOUT, () => {
+            player.showCheckout(window.location.origin + "/cart");
+        });
+
+        player.on(player.EVENT.PROVIDE_PRODUCT_DATA, event => {
+            event.products.forEach(({ref: sku, id: productId, url: productUrl}) => {
+                storeAPI.getProductByUrl(productUrl).then(item => {
+                    player.updateProduct(productId, pFactory => pFactory
+                        .product(productDetail => productDetail
+                            .brandName(item.vendor)
+                            .name(item.title)
+                            .sku(item.id)
+                            .variations(vFactory =>
+                                item.variants.map(variation => vFactory()
+                                    .attributes(aFactory => aFactory.colorName(variation.title))
+                                    .imageUrls([...item.images.map(url => urlSanitizer(url))])
+                                    .name(variation.title)
+                                    .sku(item.id)
+                                    .sizes(sFactory => [
+                                        sFactory()
+                                            .name(variation.title)
+                                            .sku(variation.id)
+                                            .inStock(variation.available)
+                                            .price(priceFactory =>
+                                                priceFactory
+                                                    .original(variation.compare_at_price / 100)
+                                                    .current(variation.price / 100)
+                                            ),
+                                    ]),
+                                )
+                            )
+                        )
+                    )
+                })
+            })
+        })
+    };
+
+</script>
+
+<script>
+    // ####### Bambuser embedding code for live show #######
+    (function () {
+        if (!window.initBambuserLiveShopping) {
+            window.initBambuserLiveShopping = function (item) {
+                window.initBambuserLiveShopping.queue.push(item)
+            };
+            window.initBambuserLiveShopping.queue = [];
+            const scriptNode = document.createElement('script');
+            scriptNode['src'] = 'https://lcx-embed.bambuser.com/the-lobby-live/embed.js';
+            document.body.appendChild(scriptNode);
+        }
+
+        window.initBambuserLiveShopping({
+            showId: '0sTGAkeSNbgHMt8l7ahd',
+            node: document.getElementById('shopify-section-16075066946c821741'),
+            type: "overlay",
+        });
+    })();
+
+</script>

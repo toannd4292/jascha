@@ -31,11 +31,11 @@
     },
     "social": {
       "share_on_facebook": "Partilhar",
-      "share_on_x": "Partilhar",
+      "share_on_twitter": "Tweetar",
       "share_on_pinterest": "Pin it",
       "alt_text": {
         "share_on_facebook": "Partilhe no Facebook",
-        "share_on_x": "Tuíte no X",
+        "share_on_twitter": "Tuíte no Twitter",
         "share_on_pinterest": "Adicione no Pinterest"
       },
       "pictured": "retratado"
@@ -77,10 +77,6 @@
       "address_no_results": "Nenhum resultado para este endereço",
       "address_query_limit_html": "Você excedeu a cota de uso da API do Google. Considere a atualização para um <a href=\"https://developers.google.com/maps/premium/usage-limits\">Plano Premium</a>.",
       "auth_error_html": "Houve um problema autenticação de sua conta do Google Maps. Criar e ativar a <a href=\"https://developers.google.com/maps/documentation/javascript/get-api-key\">API JavaScript</a> e permissões de <a href=\"https://developers.google.com/maps/documentation/geocoding/get-api-key\">geocodificação da API</a> do seu aplicativo."
-    },
-    "slideshow": {
-      "play_slideshow": "Reproduzir de slides",
-      "pause_slideshow": "slideshow pausa"
     }
   },
   "blogs": {
@@ -127,8 +123,7 @@
       "item_count": {
         "one": "{{ count }} iten",
         "other": "{{ count }} itens"
-      },
-      "max_quantity": "Solo puedes tener {{ quantity }} de {{ title }} en tu carrito."
+      }
     },
     "label": {
       "price": "Preço",
@@ -288,9 +283,6 @@
   },
   "products": {
     "general": {
-      "color_swatch_trigger": "Cor",
-      "size_trigger": "Tamanho",
-      "size_chart": "Gráfico de tamanho",
       "sale": "Venda",
       "save_html": "Poupe {{ saved_amount }}",
       "next_product": "Seguinte: {{ title }}",
@@ -298,12 +290,10 @@
       "regular_price": "Preço normal",
       "from_text_html": "Desde {{ price }}",
       "related_products": "Produtos Relacionados",
-      "collection_return": "Regressar à {{ collection }}",
-      "reviews": "Avaliações"
+      "collection_return": "Regressar à {{ collection }}"
     },
     "product": {
       "description": "Descrição",
-      "in_stock_label": "Em estoque",
       "stock_label": "{{ count }} em estoque",
       "sold_out": "Esgotado",
       "unavailable": "Indisponível",
@@ -317,16 +307,6 @@
       "waiting_for_stock": "Inventory no caminho",
       "view_in_space": "Ver no seu espaço",
       "view_in_space_label": "Ver no seu espaço, carrega item na janela de realidade aumentada"
-    }
-  },
-  "store_availability":{
-    "general":{
-      "view_store_info": "Exibir informações de loja",
-      "check_other_stores": "Ver disponibilidade em outras lojas",
-      "pick_up_available": "transbordo",
-      "pick_up_currently_unavailable": "Captador atualmente indisponível",
-      "pick_up_available_at_html": "Captador disponível em <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Captador disponível atualmente em <strong> {{location_name}} <\/strong>"
     }
   },
   "gift_cards": {
