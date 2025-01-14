@@ -31,11 +31,11 @@
     },
     "social": {
       "share_on_facebook": "Teilen",
-      "share_on_x": "Teilen",
+      "share_on_twitter": "Twittern",
       "share_on_pinterest": "Pinnen",
       "alt_text": {
         "share_on_facebook": "Auf Facebook teilen",
-        "share_on_x": "Auf X twittern",
+        "share_on_twitter": "Auf Twitter twittern",
         "share_on_pinterest": "Auf Pinterest pinnen"
       },
       "pictured": "abgebildet"
@@ -46,19 +46,11 @@
       "submit": "Abonnieren"
     },
     "search": {
-      "view_more": "Alle Ergebnisse für \"{{ terms }}\" anzeigen",
-      "products": "Produkte",
-      "suggestions": "Vorschläge",
-      "collections": "Kollektionen",
-      "pages": "Seiten",
-      "articles": "Artikel",
-      "no_results_html": "Suche nach \"{{ terms }}\"",
+      "no_results_html": "Ihre Suche nach \"{{ terms }}\" hat keine Ergebnisse hervorgebracht.",
       "results_for_html": "Ihre Suche nach \"{{ terms }}\" hat folgende Ergebnisse hervorgebracht:",
       "title": "Suche",
-      "placeholder": "Suchen",
+      "placeholder": "Durchsuchen Sie unseren Shop",
       "submit": "Suchen",
-      "cancel": "Abbrechen",
-      "search_title": "Top gesucht",
       "result_count": {
         "one": "{{ count }} Ergebnis",
         "other": "{{ count }} Ergebnisse"
@@ -85,10 +77,6 @@
       "address_no_results": "Keine Ergebnisse für diese Adresse",
       "address_query_limit_html": "Sie haben die Google- API-Nutzungsgrenze überschritten. Betrachten wir zu einem <a href=\"https://developers.google.com/maps/premium/usage-limits\">Premium-Paket</a> zu aktualisieren.",
       "auth_error_html": "Es gab ein Problem bei Google Maps Konto zu authentifizieren. Erstellen und die <a href=\"https://developers.google.com/maps/documentation/javascript/get-api-key\">JavaScript- API</a> und <a href=\"https://developers.google.com/maps/documentation/geocoding/get-api-key\">Geocoding API</a> -Berechtigungen der App aktivieren."
-    },
-    "slideshow": {
-      "play_slideshow": "Diashow abspielen",
-      "pause_slideshow": "Pause Diashow"
     }
   },
   "blogs": {
@@ -136,8 +124,7 @@
       "item_count": {
         "one": "{{ count }} Artikel",
         "other": "{{ count }} Artikel"
-      },
-      "max_quantity": "Du kannst nur haben {{ quantity }} von {{ title }} in Ihrem Warenkorbt."
+      }
     },
     "label": {
       "price": "Preis",
@@ -297,9 +284,6 @@
   },
   "products": {
     "general": {
-      "color_swatch_trigger": "Farbe",
-      "size_trigger": "Größe",
-      "size_chart": "Größentabelle",
       "sale": "Verkauf",
       "save_html": "Sparen {{ saved_amount }}",
       "next_product": "Nächster: {{ title }}",
@@ -307,12 +291,10 @@
       "regular_price": "Normaler Preis",
       "from_text_html": "Von {{ price }}",
       "related_products": "Verwandte Artikel",
-      "collection_return": "Zurück zur {{ collection }}",
-      "reviews": "Rezensionen"
+      "collection_return": "Zurück zur {{ collection }}"
     },
     "product": {
       "description": "Beschreibung",
-      "in_stock_label": "Auf Lager",
       "stock_label": "{{ count }} auf Lager",
       "sold_out": "Ausverkauft",
       "unavailable": "Nicht verfügbar",
@@ -323,19 +305,9 @@
       "shipping_policy_html": "zzgl. <a href='{{ link }}'>Versandkosten<\/a>",
       "will_not_ship_until": "Wird nach dem {{ date }} versendet",
       "will_be_in_stock_after": "Wird nach dem {{ date }} auf Lager sein",
-      "waiting_for_stock": "Nachbestellt, bald verfügbar",
+      "waiting_for_stock": "Inventar auf dem Weg",
       "view_in_space": "In Ihrem Bereich ansehen",
       "view_in_space_label": "„Ansicht in Ihrem Raum“ lädt den Artikel im Augmented-Reality-Fenster"
-    }
-  },
-  "store_availability":{
-    "general":{
-      "view_store_info": "Ansicht speichern Informationen",
-      "check_other_stores": "Prüfen Sie die Verfügbarkeit von anderen Shops",
-      "pick_up_available": "Pickup verfügbar",
-      "pick_up_currently_unavailable": "Pickup derzeit nicht verfügbar",
-      "pick_up_available_at_html": "Pickup verfügbar unter <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Pickup derzeit nicht verfügbar unter <strong> {{location_name}} <\/strong>"
     }
   },
   "gift_cards": {
@@ -349,19 +321,6 @@
       "shop_link": "Einkauf beginnen",
       "print": "Drucken",
       "add_to_apple_wallet": "Hinzufügen zu Apple Wallet"
-    }
-  },
-  "recipient": {
-    "form": {
-      "checkbox": "Ich möchte dies als Geschenk senden",
-      "email_label": "Empfänger E-Mail",
-      "email": "E-Mail",
-      "name_label": "Name des Empfängers (optional)",
-      "name": "Name",
-      "message_label": "Nachricht (optional)",
-      "message": "Nachricht",
-      "max_characters": "Maximal {{ max_chars }} Zeichen",
-      "send_on_label": "Senden an (optional)"
     }
   },
   "date_formats":{

@@ -12,7 +12,7 @@
       </header>
 
       <div class="form-vertical">
-        {%- form 'activate_customer_password' -%}
+        {% form 'activate_customer_password' %}
 
           {{ form.errors | default_errors }}
 
@@ -22,9 +22,8 @@
           <label for="CustomerPasswordConfirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
           <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" class="input-full">
 
-          <label for="activate-account-submit" class="hidden-label">{{ 'customer.activate_account.submit' | t }}</label>
-          <input type="submit" id="activate-account-submit" class="btn" value="{{ 'customer.activate_account.submit' | t }}">
-        {%- endform -%}
+          <input type="submit" class="btn" value="{{ 'customer.activate_account.submit' | t }}">
+        {% endform %}
       </div>
 
     </div>

@@ -1,134 +1,112 @@
-{% unless section.settings.disable_for_account_holders and customer %}
-
-{% for block in section.blocks %}
-  {% if block.type == 'header' %}
-    {% assign has_reminder = true %}
-  {% endif %}
-{% endfor %}
+{% if section.settings.mode != 'disabled' %}
 
 <div
   id="NewsletterPopup-{{ section.id }}"
-  class="modal modal--square modal--newsletter modal--mobile-friendly newsletter-popup"
+  class="modal modal--square modal--newsletter modal--mobile-friendly"
   data-section-id="{{ section.id }}"
   data-section-type="newsletter-popup"
-  data-has-reminder="{{ has_reminder }}"
   data-delay-days="{{ section.settings.popup_days }}"
   data-delay-seconds="{{ section.settings.popup_seconds }}"
-  data-test-mode="{{ request.design_mode }}">
+  data-test-mode="{% if section.settings.mode == 'testing' %}true{% else %}false{% endif %}">
   <div class="modal__inner">
     <div class="modal__centered medium-up--text-center">
-      <div class="modal__centered-content {% if section.settings.popup_image != nil or section.settings.enable_newsletter == true %}newsletter-popup--text-left{% endif %} {% if section.settings.popup_image != blank %}has-image{% endif %}">
-        <div class="newsletter-popup__content newsletter-popup__content-{{ section.settings.image_position }}">
-          {% if section.settings.popup_image != blank %}
-            <div class="newsletter-popup__content-image-wrapper">
-              {%- render 'image-element',
-                img: section.settings.popup_image,
-                img_width: 1000,
-                sizeVariable: '50vw',
-                classes: 'newsletter-popup__content-image',
-              -%}
+      <div class="modal__centered-content">
+
+        <div class="grid">
+          <div class="grid__item{% if section.settings.enable_newsletter %} medium-up--one-half medium-up--text-left{% endif %}">
+            {% if section.settings.popup_title != blank %}
+              <div class="h2 modal__title">{{ section.settings.popup_title }}</div>
+            {% endif %}
+
+            {% if section.settings.popup_text != blank %}
+              <div class="rte">
+                {{ section.settings.popup_text }}
+              </div>
+            {% endif %}
+
+            {% unless section.settings.enable_newsletter %}
+              {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+                <div class="popup-cta text-center">
+                  <a href="{{ section.settings.button_link }}" class="btn btn--tertiary">
+                    {{ section.settings.button_label }}
+                  </a>
+                </div>
+              {% endif %}
+            {% endunless %}
+          </div>
+
+          {% if section.settings.enable_newsletter %}
+            <div class="grid__item small--text-left medium-up--one-half">
+              {% if section.settings.enable_newsletter %}
+                <div class="popup-cta">
+                  {% include 'newsletter-form', section_id: section.id, snippet_context: 'popup' %}
+                </div>
+              {% endif %}
+
+              {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+                <div class="popup-cta text-center">
+                  <a href="{{ section.settings.button_link }}" class="btn btn--tertiary">
+                    {{ section.settings.button_label }}
+                  </a>
+                </div>
+              {% endif %}
             </div>
           {% endif %}
-          <div class="newsletter-popup__content-info">
-            <div class="content__text">
-              {%- if section.settings.popup_title != blank -%}
-                <h2 class="h2 section-header__title">{{ section.settings.popup_title }}</h2>
-              {%- endif -%}
-
-              {%- if section.settings.popup_text != blank -%}
-                <div class="rte">
-                  {{ section.settings.popup_text }}
-                </div>
-              {%- endif -%}
-
-              {%- unless section.settings.enable_newsletter -%}
-                {%- if section.settings.button_label != blank -%}
-                  <div class="popup-cta text-center">
-                    <a href="{{ section.settings.button_link }}" class="btn btn--tertiary newsletter-button">
-                      {{ section.settings.button_label }}
-                    </a>
-                  </div>
-                {%- endif -%}
-
-                {% if section.settings.show_social_icons %}
-                  {% render 'social-icons' %}
-                {% endif %}
-              {%- endunless -%}
-            </div>
-
-
-
-            {%- if section.settings.enable_newsletter -%}
-              <div class="content__form">
-                <div class="popup-cta">
-                  {%- render 'newsletter-form', section_id: section.id, snippet_context: 'popup' -%}
-                </div>
-
-                {%- if section.settings.button_label != blank -%}
-                  <div class="popup-cta text-center">
-                    <a href="{{ section.settings.button_link }}" class="btn btn--tertiary newsletter-button">
-                      {{ section.settings.button_label }}
-                    </a>
-                  </div>
-                {% endif %}
-
-                {% if section.settings.show_social_icons %}
-                  {% render 'social-icons' %}
-                {% endif %}
-              </div>
-            {%- endif -%}
-
-          </div>
         </div>
-
-        <button type="button" class="btn btn--tertiary btn--circle modal__close js-modal-close text-link">
-          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
-          <span class="icon__fallback-text">{{ 'general.accessibility.close_modal' | t }}</span>
-        </button>
       </div>
+
+      <button type="button" class="btn btn--tertiary btn--circle modal__close js-modal-close text-link">
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"/></svg>
+        <span class="icon__fallback-text">{{ 'general.accessibility.close_modal' | t }}</span>
+      </button>
     </div>
   </div>
 </div>
 
-{% for block in section.blocks %}
-  {% if block.type == 'header' %}
-    {% render 'newsletter-reminder',
-      section: section,
-      block: block
-    %}
-  {% endif %}
-{% endfor %}
-
-{% endunless %}
+{% endif %}
 
 {% schema %}
   {
-    "name": "t:sections.newsletter-popup.name",
-    "max_blocks": 1,
+    "name": "Popup",
     "settings": [
       {
-        "type": "checkbox",
-        "id": "disable_for_account_holders",
-        "label": "t:sections.newsletter-popup.settings.disable_for_account_holders.label",
-        "default": true,
-        "info": "t:sections.newsletter-popup.settings.disable_for_account_holders.info"
+        "type": "select",
+        "id": "mode",
+        "label": "Display mode",
+        "default": "disabled",
+        "options": [
+          {
+            "value": "enabled",
+            "label": "Enabled"
+          },
+          {
+            "value": "testing",
+            "label": "Test mode"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ],
+        "info": "Test mode displays your popup each time even after dismissing it. Switch to Enabled once you are happy with how your popup looks."
       },
       {
         "type": "range",
         "id": "popup_seconds",
-        "label": "t:sections.newsletter-popup.settings.popup_seconds.label",
+        "label": "Delay",
+        "info": "Delay is disabled in theme editor for visibility",
         "default": 5,
         "min": 2,
-        "max": 20,
+        "max": 60,
         "step": 1,
         "unit": "sec"
       },
       {
         "type": "range",
         "id": "popup_days",
-        "label": "t:sections.newsletter-popup.settings.popup_days.label",
+        "label": "Frequency",
         "default": 30,
-        "info": "t:sections.newsletter-popup.settings.popup_days.info",
+        "info": "Number of days before a dismissed popup reappears",
         "min": 2,
         "max": 30,
         "step": 1,
@@ -136,101 +114,49 @@
       },
       {
         "type": "header",
-        "content": "t:sections.newsletter-popup.settings.header_content"
+        "content": "Content"
       },
       {
         "type": "text",
         "id": "popup_title",
-        "label": "t:sections.newsletter-popup.settings.popup_title.label",
+        "label": "Heading",
         "default": "Sign up and save"
       },
       {
         "type": "richtext",
         "id": "popup_text",
-        "label": "t:sections.newsletter-popup.settings.popup_text.label",
+        "label": "Text",
         "default": "<p>Entice customers to sign up for your mailing list with discounts or exclusive offers.</p>"
       },
       {
-        "type": "image_picker",
-        "id": "popup_image",
-        "label": "t:sections.newsletter-popup.settings.popup_image.label",
-        "info": "t:sections.newsletter-popup.settings.popup_image.info"
-      },
-      {
-        "type": "select",
-        "id": "image_position",
-        "label": "t:sections.newsletter-popup.settings.image_position.label",
-        "default": "left",
-        "options": [
-          {
-            "value": "left",
-            "label": "t:sections.newsletter-popup.settings.image_position.options.left.label"
-          },
-          {
-            "value": "right",
-            "label": "t:sections.newsletter-popup.settings.image_position.options.right.label"
-          }
-        ]
-      },
-      {
-        "type": "checkbox",
-        "id": "show_social_icons",
-        "label": "Show social icons",
-        "default": false
-      },
-      {
         "type": "header",
-        "content": "t:sections.newsletter-popup.settings.header_newsletter"
+        "content": "Newsletter"
       },
       {
         "type": "paragraph",
-        "content": "t:sections.newsletter-popup.settings.content"
+        "content": "Customers who subscribe will have their email address added to the 'accepts marketing' [customer list](/admin/customers?query=&accepts_marketing=1)."
       },
       {
         "type": "checkbox",
         "id": "enable_newsletter",
-        "label": "t:sections.newsletter-popup.settings.enable_newsletter.label",
+        "label": "Enable newsletter",
         "default": true
       },
       {
         "type": "header",
-        "content": "t:sections.newsletter-popup.settings.header_button"
+        "content": "Button"
       },
       {
         "type": "text",
         "id": "button_label",
-        "label": "t:sections.newsletter-popup.settings.button_label.label"
+        "label": "Button label"
       },
       {
         "type": "url",
         "id": "button_link",
-        "label": "t:sections.newsletter-popup.settings.button_link.label"
+        "label": "Button link"
       }
     ],
-    "blocks": [
-      {
-        "type": "header",
-        "name": "t:sections.newsletter-popup.blocks.header.name",
-        "limit": 1,
-        "settings": [
-          {
-            "type": "text",
-            "id": "reminder_label",
-            "label": "t:sections.newsletter-popup.blocks.header.settings.text.label",
-            "default": "Get 10% off",
-            "info": "t:sections.newsletter-popup.blocks.header.settings.text.info"
-          }
-        ]
-      }
-    ],
-    "default": {
-      "settings": {},
-      "blocks": [
-        {
-          "type": "header",
-          "settings": {}
-        }
-      ]
-    }
+    "blocks" : []
   }
 {% endschema %}

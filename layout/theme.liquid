@@ -1,222 +1,191 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
+<html class="no-js" lang="{{ request.locale }}">
 <head>
+  {% render 'sizechartsrelentless' %}
+
+   <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TNQXG2M');</script>
+<!-- End Google Tag Manager -->
+  
+ {%- render 'layouthub_header' -%}
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114932520-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-114932520-1');
+</script>
+  
+  {% include 'sizechartsrelentless' %}
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.color_button }}">
   <link rel="canonical" href="{{ canonical_url }}">
-  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-  <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
-  <link rel="dns-prefetch" href="https://ajax.googleapis.com">
-  <link rel="dns-prefetch" href="https://maps.googleapis.com">
-  <link rel="dns-prefetch" href="https://maps.gstatic.com">
+  <meta name="format-detection" content="telephone=no">
 
-  {%- if settings.favicon != blank -%}
+  {%- if settings.favicon -%}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
   {%- endif -%}
 
-  {%- render 'seo-title' -%}
+  {% include 'seo-title' %}
+  <title>{{ seo_title }}</title>
 
   {%- if page_description -%}
   <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
 
-  {%- render 'social-meta-tags' -%}
+  {% include 'social-meta-tags' %}
 
-  {{ content_for_header }}
+  {{content_for_header}} 
+ <!--LHREPLACED-->
 
   <script>
     var theme = {
-      stylesheet: "{{ 'theme.css' | asset_url }}",
+      stylesheet: "{{ 'theme.scss.css' | asset_url }}",
       template: {{ template | json }},
-      routes: {
-        home: "{{ routes.root_url }}",
-        cart: "{{ routes.cart_url | append: '.js' }}",
-        cartPage: "{{ routes.cart_url }}",
-        cartAdd: "{{ routes.cart_add_url | append: '.js'}}",
-        cartChange: "{{ routes.cart_change_url | append: '.js' }}",
-        predictiveSearch: "{{ routes.predictive_search_url }}"
-      },
       strings: {
         addToCart: {{ 'products.product.add_to_cart' | t | json }},
         soldOut: {{ 'products.product.sold_out' | t | json }},
         unavailable: {{ 'products.product.unavailable' | t | json }},
         regularPrice: {{ 'products.general.regular_price' | t | json }},
         salePrice: {{ 'products.general.sale_price' | t | json }},
-        inStockLabel: {{ 'products.product.in_stock_label' | t | json }},
-        oneStockLabel: {{ 'products.product.stock_label.one' | t: count: '[count]' | json }},
-        otherStockLabel: {{ 'products.product.stock_label.other' | t: count: '[count]' | json }},
+        stockLabel: {{ 'products.product.stock_label' | t: count: '[count]' | json }},
         willNotShipUntil: {{ 'products.product.will_not_ship_until' | t: date: '[date]' | json }},
         willBeInStockAfter: {{ 'products.product.will_be_in_stock_after' | t: date: '[date]' | json }},
         waitingForStock: {{ 'products.product.waiting_for_stock' | t | json }},
         cartItems: {{ 'cart.general.item_count' | t: count: '[count]' | json }},
         cartConfirmDelete: {{ 'cart.general.delete_confirm' | t | json }},
-        cartTermsConfirmation: {{ 'cart.general.terms_confirm' | t | json }},
-        maxQuantity: {{ 'cart.general.max_quantity' | t: quantity: '[quantity]', title: '[title]' | json }}
+        cartTermsConfirmation: {{ 'cart.general.terms_confirm' | t | json }}
       },
       settings: {
+        dynamicVariantsEnable: true,
         cartType: {{ settings.cart_type | json }},
-        isCustomerTemplate: {% if request.page_type contains 'customers/' %}true{% else %}false{% endif %},
         moneyFormat: {{ shop.money_format | json }},
         quickView: {{ settings.quick_shop_enable }},
         hoverProductGrid: {{ settings.product_hover_image }},
         themeName: 'Streamline',
-        themeVersion: "6.6.0",
-        predictiveSearchType: {{ settings.search_type | json }},
+        themeVersion: "3.0.2"
       }
     };
 
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
   </script>
 
-  {%- render 'css-variables' -%}
-  {%- render 'critical-css' -%}
-  {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+  {% include 'critical-css' %}
+  {% include 'load-css' %}
 
+  <script src="{{ 'vendor-v2.js' | asset_url | split: '?' | first }}" defer="defer"></script>
   {%- if shop.enabled_currencies.size > 1 -%}
-    <link rel="stylesheet" href="{{ 'country-flags.css' | asset_url | split: '?' | first }}">
+    <link rel="stylesheet" href="{{ 'currency-flags.css' | asset_url }}">
   {%- endif -%}
-
-  <script src="{{ 'vendor-v6.js' | asset_url | split: '?' | first }}" defer="defer"></script>
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-
   {%- if request.page_type contains 'customers/' -%}
     <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
   {%- endif -%}
 
-  {% if request.design_mode %}
-    <script>theme.settings.email = {{ shop.email | json }}</script>
-    <script src="https://api.archetypethemes.co/design-mode.js" defer="defer"></script>
-  {% endif %}
+  {% include 'shogun-head' %}
+
+  {% render 'easy-gdpr-settings' %}
+  <meta name="google-site-verification" content="3xdpaPhHvj0h1OY23YEC2SNO-c8V5KwAnBldwQu5RCY" />
+  <!-- Hotjar Tracking Code for https://jascha.se/ --> <script> (function(h,o,t,j,a,r){ h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)}; h._hjSettings={hjid:2660940,hjsv:6}; a=o.getElementsByTagName('head')[0]; r=o.createElement('script');r.async=1; r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv; a.appendChild(r); })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv='); </script>
+  <meta name="facebook-domain-verification" content="pb4dnv15a2lcs8eu3biyhrq39fuitc" />
 </head>
 
-<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if request.path == '/challenge' %} template-challange{% endif %}{% if settings.cart_type == 'sticky' and cart.item_count > 0 and template != 'cart' %} body--sticky-cart-open{% endif %}{% if cart.item_count > 0 %} cart-has-items{% endif %}" ontouchstart="return true;" data-transitions="{{settings.animate_page_transitions}}" data-animate_underlines="true" data-animate_images="{{settings.animate_images}}" data-button_style="{{settings.button_style}}" data-type_product_capitalize="{{settings.type_product_capitalize}}" data-type_header_capitalize="{{settings.type_header_capitalize}}" data-product_image_scatter="{{settings.product_image_scatter}}" data-button_type_style="{{settings.button_type_style}}">
+<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if settings.cart_type == 'sticky' and cart.item_count > 0 and template != 'cart' %} body--sticky-cart-open{% endif %}{% if cart.item_count > 0 %} cart-has-items{% endif %}" data-transitions="{{ settings.animate_page_transitions }}" ontouchstart="return true;">
+      <!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNQXG2M"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
   <div id="OverscrollLoader" class="overscroll-loader" aria-hidden="true">
-    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--full-color icon-loader--full-color"><path class="icon-loader__close" d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/><path class="icon-loader__path" d="M40 90a40 40 0 1 1 20 0"/></svg>
+    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--full-color icon-loader--full-color"><path class="icon-loader__close" d="M19 17.61l27.12 27.13m0-27.12L19 44.74"/><path class="icon-loader__path" d="M40 90a40 40 0 1 1 20 0"/></svg>
   </div>
 
   <div class="root">
 
-    {%- if settings.animate_page_transitions -%}
+    {% if settings.animate_page_transitions %}
       <script>window.setTimeout(function() { document.body.className += " loaded"; }, 25);</script>
-    {%- endif -%}
+    {% endif %}
+
+    {%- assign loader_size = settings.desktop_loader_width | append: 'x' -%}
+    {%- assign loader_size_mobile = settings.mobile_loader_width | append: 'x' -%}
 
     <div class="splash-screen">
-      {%- if settings.animate_page_transitions and settings.logo_loader_image != blank -%}
+      {% if settings.logo_loader_image != blank %}
         <div class="splash-screen__loader">
-          {% comment %} Desktop logo {% endcomment %}
-          {%- assign width = settings.logo_loader_image.width | times: 2 -%}
-          {%- assign height = settings.logo_loader_image.width | divided_by: settings.logo_loader_image.aspect_ratio -%}
-          {%- capture sizes -%}{{ settings.desktop_loader_width }}px{%- endcapture -%}
-          {%- capture widths -%}{{ settings.desktop_loader_width }}, {{ settings.desktop_loader_width | times: 2 }}{%- endcapture -%}
-          {%- capture style -%}max-height: {{ settings.desktop_loader_width | divided_by: settings.logo_loader_image.aspect_ratio }}px;max-width: {{ settings.desktop_loader_width }}px;{%- endcapture -%}
-
-          {% comment %} Mobile logo {% endcomment %}
-          {%- assign mobile_height = settings.mobile_loader_width | times: 2 -%}
-          {%- assign mobile_height = settings.mobile_loader_width | divided_by: settings.logo_loader_image.aspect_ratio -%}
-          {%- capture mobile_sizes -%}{{ settings.mobile_loader_width }}px{%- endcapture -%}
-          {%- capture mobile_widths -%}{{ settings.mobile_loader_width }}, {{ settings.mobile_loader_width | times: 2 }}{%- endcapture -%}
-          {%- capture mobile_style -%}max-height: {{ settings.mobile_loader_width | divided_by: settings.logo_loader_image.aspect_ratio }}px;max-width: {{ settings.mobile_loader_width }}px;{%- endcapture -%}
-
-          {%- render 'image-element',
-            img: settings.logo_loader_image,
-            classes: 'loader-logo__img small--hide',
-            img_width: width,
-            img_height: height,
-            sizes: sizes,
-            widths: widths,
-            style: style,
-            ariaHidden: true,
-          -%}
-
-          {%- render 'image-element',
-            img: settings.logo_loader_image,
-            classes: 'loader-logo__img medium-up--hide',
-            img_width: mobile_width,
-            img_height: mobile_height
-            sizes: mobile_sizes,
-            widths: mobile_widths,
-            style: mobile_style,
-            ariaHidden: true,
-          -%}
+          <img
+            class="loader-logo__img"
+            src="{{ settings.logo_loader_image | img_url: loader_size }}"
+            srcset="{{ settings.logo_loader_image | img_url: loader_size }} 1x, {{ settings.logo_loader_image | img_url: loader_size, scale: 2 }} 2x"
+            aria-hidden="true">
         </div>
-      {%- else -%}
+      {% else %}
         <span class="loader-text">{{ 'general.accessibility.loading' | t }}</span>
-      {%- endif -%}
+      {% endif %}
     </div>
 
     <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
     <div id="PageContainer" class="page-container">
       <div class="transition-body">
-        {%- sections 'header-group' -%}
-        {%- sections 'popup-group' -%}
+        {% section 'header' %}
 
         <main class="main-content" id="MainContent">
-          {{ content_for_layout }}
+          <!--LayoutHub-Workspace-Start-->{{ content_for_layout }}<!--LayoutHub-Workspace-End-->
         </main>
 
-        {%- sections 'footer-group' -%}
+        {% section 'social' %}
+        {% section 'footer' %}
       </div>
     </div>
 
-    {%- render 'video-modal' -%}
-    {%- if settings.animate_page_transition_style == 'page-logo' -%}
+    {% section 'newsletter-popup' %}
+
+    {% include 'video-modal' %}
+    {% if settings.animate_page_transition_style == 'page-logo' %}
       <div class="loader-logo">
-        {%- if settings.logo_loader_image != blank -%}
+        {% if settings.logo_loader_image != blank %}
           <div class="splash-screen__loader">
-            {% comment %} Desktop logo {% endcomment %}
-            {%- assign width = settings.logo_loader_image.width | times: 2 -%}
-            {%- assign height = settings.logo_loader_image.width | divided_by: settings.logo_loader_image.aspect_ratio -%}
-            {%- capture sizes -%}{{ settings.desktop_loader_width }}px{%- endcapture -%}
-            {%- capture widths -%}{{ settings.desktop_loader_width }}, {{ settings.desktop_loader_width | times: 2 }}{%- endcapture -%}
-            {%- capture style -%}max-height: {{ settings.desktop_loader_width | divided_by: settings.logo_loader_image.aspect_ratio }}px;max-width: {{ settings.desktop_loader_width }}px;{%- endcapture -%}
-
-            {% comment %} Mobile logo {% endcomment %}
-            {%- assign mobile_height = settings.mobile_loader_width | times: 2 -%}
-            {%- assign mobile_height = settings.mobile_loader_width | divided_by: settings.logo_loader_image.aspect_ratio -%}
-            {%- capture mobile_sizes -%}{{ settings.mobile_loader_width }}px{%- endcapture -%}
-            {%- capture mobile_widths -%}{{ settings.mobile_loader_width }}, {{ settings.mobile_loader_width | times: 2 }}{%- endcapture -%}
-            {%- capture mobile_style -%}max-height: {{ settings.mobile_loader_width | divided_by: settings.logo_loader_image.aspect_ratio }}px;max-width: {{ settings.mobile_loader_width }}px;{%- endcapture -%}
-
-            {%- render 'image-element',
-              img: settings.logo_loader_image,
-              classes: 'loader-logo__img small--hide',
-              img_width: width,
-              img_height: height,
-              sizes: sizes,
-              widths: widths,
-              style: style,
-              ariaHidden: true,
-            -%}
-
-            {%- render 'image-element',
-              img: settings.logo_loader_image,
-              classes: 'loader-logo__img medium-up--hide',
-              img_width: mobile_width,
-              img_height: mobile_height
-              sizes: mobile_sizes,
-              widths: mobile_widths,
-              style: mobile_style,
-              ariaHidden: true,
-            -%}
+            <img
+              class="loader-logo__img"
+              src="{{ settings.logo_loader_image | img_url: loader_size }}"
+              srcset="{{ settings.logo_loader_image | img_url: loader_size }} 1x, {{ settings.logo_loader_image | img_url: loader_size, scale: 2 }} 2x"
+              aria-hidden="true">
           </div>
-        {%- else -%}
+        {% else %}
           <span class="loader-text">{{ 'general.accessibility.loading' | t }}</span>
-        {%- endif -%}
+        {% endif %}
       </div>
-    {%- endif -%}
+    {% endif %}
   </div>
   <div id="ProductScreens"></div>
+  {% include 'photoswipe-template' %}
+  {% if settings.cart_type == 'drawer' %}
+    {% include 'cart-drawer' %}
+  {% endif %}
+{% include 'subscribe-it-helper' %}{%- render 'layouthub_footer' -%} 
+ {{'tiny-img-link-preloader.js' | asset_url | script_tag }}
 
-  {%- liquid
-    render 'photoswipe-template'
-    if settings.cart_type == 'drawer'
-      render 'cart-drawer'
-    endif
-    render 'tool-tip'
-  -%}
-</body>
+      <style>
+@media (min-width: 768px ) {
+#shopify-section-header header.header {
+    display: flex;
+}
+#shopify-section-header  form#FooterLanguageForm {
+    display: none;
+}
+.list-menu .list-menu__item {
+    padding: 1.2rem 1rem;
+}
+}
+</style>
+    </body>
 </html>

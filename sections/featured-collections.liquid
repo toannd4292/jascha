@@ -1,7 +1,7 @@
 <div class="index-section{% if section.settings.alt %} index-section--alt{% endif %}">
   <div data-aos>
 
-    {%- if section.settings.title != blank -%}
+    {% if section.settings.title != blank %}
       <div class="page-width">
         <header class="section-header">
           <h2 class="section-header__title appear-delay">
@@ -9,23 +9,24 @@
           </h2>
         </header>
       </div>
-    {%- endif -%}
+    {% endif %}
 
     <div class="page-width">
       <div class="skrim-grid appear-delay-2">
-        {%- liquid
-          assign isEmpty = true
 
-          if section.blocks.size > 0
-            assign isEmpty = false
-          endif
+        {%- assign isEmpty = true -%}
 
-          for block in section.blocks limit: collection_limit
-            render 'collection-grid-item', block: block, collection: collections[block.settings.collection], image: block.settings.image, sizeVariable: '25vw', fallback: '50vw'
-          endfor
-        -%}
+        {% if section.blocks.size > 0 %}
+          {%- assign isEmpty = false -%}
+        {% endif %}
 
-        {%- if isEmpty -%}
+        {% for block in section.blocks limit: collection_limit %}
+          {%- assign collection = collections[block.settings.collection] -%}
+          {%- assign background_position = block.settings.focal_point -%}
+          {% include 'collection-grid-item', image: block.settings.image %}
+        {% endfor %}
+
+        {% if isEmpty %}
           <div class="page-width">
             <div class="grid">
               <div class="grid__item">
@@ -35,7 +36,7 @@
               </div>
             </div>
           </div>
-        {%- endif -%}
+        {% endif %}
 
       </div>
     </div>
@@ -44,24 +45,24 @@
 </div>
 
 {% schema %}
-{
-  "name": "t:sections.featured-collections.name",
-  "max_blocks": 15,
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "t:sections.featured-collections.settings.title.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "alt",
-      "label": "t:sections.featured-collections.settings.alt.label"
-    }
-  ],
-  "presets": [
-    {
-      "name": "t:sections.featured-collections.presets.collection_list.name",
+  {
+    "name": "Collection list",
+    "max_blocks": 15,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "alt",
+        "label": "Use alternate section color"
+      }
+    ],
+    "presets": [{
+      "name": "Collection list",
+      "category": "Collection",
       "blocks": [
         {
           "type": "collection"
@@ -76,28 +77,69 @@
           "type": "collection"
         }
       ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "collection",
-      "name": "t:sections.featured-collections.blocks.collection.name",
-      "settings": [
-        {
-          "id": "collection",
-          "type": "collection",
-          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "t:sections.featured-collections.blocks.collection.settings.image.label"
-        }
-      ]
-    }
-  ],
-  "disabled_on": {
-    "groups": ["footer", "header", "custom.popups"]
+    }],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "focal_point",
+            "label": "Focal point",
+            "info": "Used to keep the subject of your photo in view.",
+            "default": "center center",
+            "options": [
+              {
+                "value": "top left",
+                "label": "Top left"
+              },
+              {
+                "value": "top center",
+                "label": "Top center"
+              },
+              {
+                "value": "top right",
+                "label": "Top right"
+              },
+              {
+                "value": "center left",
+                "label": "Left"
+              },
+              {
+                "value": "center center",
+                "label": "Center"
+              },
+              {
+                "value": "center right",
+                "label": "Right"
+              },
+              {
+                "value": "bottom left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "bottom center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "bottom right",
+                "label": "Bottom right"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
-}
 {% endschema %}
